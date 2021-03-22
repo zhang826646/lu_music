@@ -474,7 +474,7 @@ class Ui_Form(object):
     '''打开文件夹'''
 
     def openDir(self):
-        self.cur_path = QFileDialog.getExistingDirectory(self, "选取文件夹", self.cur_path)
+        self.cur_path = QFileDialog.getExistingDirectory(None, "选取文件夹", self.cur_path)
         if self.cur_path:
             self.showMusicList()
             self.cur_playing_song = ''
