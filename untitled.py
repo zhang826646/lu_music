@@ -153,17 +153,6 @@ class Ui_Form(object):
         self.listView_7.setObjectName("listView_7")
         self.listView_7.itemDoubleClicked.connect(self.doubleClicked)
 
-        # layout = QVBoxLayout()
-        # self.slm = QStringListModel()  # 创建mode
-        # self.qList = ['Item 1', 'Item 2', 'Item 3', 'Item 4']  # 添加的数组数据
-        # self.slm.setStringList(self.qList)  # 将数据设置到model
-        # self.listView_7.setModel(self.slm)  ##绑定 listView 和 model
-        # self.listView_7.clicked.connect(self.clickedlist)  # listview 的点击事件
-        # layout.addWidget(self.listView_7)  # 将list view添加到layout
-
-
-
-
         self.stackedWidget_2.addWidget(self.zhu_7)
 
         # 右侧第8个页面
@@ -324,7 +313,7 @@ class Ui_Form(object):
         self.timer.timeout.connect(self.playByMode)
 
 
-
+        #右侧导航按钮
         self.but_1 = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.but_1.setStyleSheet("border:none;\nborder-left:4px solid red;font-weight:700;")
         self.but_1.setObjectName("but_1")
@@ -371,7 +360,7 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.but_11)
 
         self.retranslateUi(Form)
-        self.stackedWidget_2.setCurrentIndex(6)
+        self.stackedWidget_2.setCurrentIndex(6) #打开默认页面
         self.but_1.clicked.connect(lambda:self.stackedWidget_2.setCurrentIndex(0))
         self.but_2.clicked.connect(lambda:self.stackedWidget_2.setCurrentIndex(1))
         self.but_3.clicked.connect(lambda:self.stackedWidget_2.setCurrentIndex(2))
@@ -424,15 +413,7 @@ class Ui_Form(object):
         self.pushButton_shangyishou.setText(_translate("Form", "上一首"))
         self.pushButton_7.setText(_translate("Form", "选择本地文件"))
 
-    def get_mp3(self):
 
-        openfile_name = QFileDialog.getOpenFileName(self,'选择文件','','Excel files(*.mp3 , *.xls)',None,QFileDialog.DontUseNativeDialog)
-        # print("aaaaaa")
-        # print(openfile_name)
-
-    def clickedlist(self,qModelIndex):
-        # QMessageBox.information(self, "QListView", "你选择了: " + self.qList[qModelIndex.row()])
-        print("点击的是：" + str(qModelIndex.row()))
 
     def playByMode(self):
         if (not self.is_pause) and (not self.is_switching):
@@ -488,34 +469,34 @@ class Ui_Form(object):
     '''导入setting'''
 
     def loadSetting(self):
-        if os.path.isfile(self.settingfilename):
-            config = configparser.ConfigParser()
-            config.read(self.settingfilename)
-            self.cur_path = config.get('MusicPlayer', 'PATH')
-            self.showMusicList()
+        if os.path.isfile(self.settingfilename):   #如果配置文件存在
+            config = configparser.ConfigParser()   #初始化实例
+            config.read(self.settingfilename)      #读取配置文件
+            self.cur_path = config.get('MusicPlayer', 'PATH')   #读取路径
+            self.showMusicList()  #调用函数显示
     #
     '''更新setting'''
 
     def updateSetting(self):
-        config = configparser.ConfigParser()
-        config.read(self.settingfilename)
-        if not os.path.isfile(self.settingfilename):
-            config.add_section('MusicPlayer')
-        config.set('MusicPlayer', 'PATH', self.cur_path)
-        config.write(open(self.settingfilename, 'w'))
+        config = configparser.ConfigParser()            #初始化实例
+        config.read(self.settingfilename)               #读取配置文件
+        if not os.path.isfile(self.settingfilename):    #如果文件不存在
+            config.add_section('MusicPlayer')           #创建配置文件属性
+        config.set('MusicPlayer', 'PATH', self.cur_path)    #添加配置
+        config.write(open(self.settingfilename, 'w'))   #创建文件并写入
 
     '''显示文件夹中所有音乐'''
 
     def showMusicList(self):
         # self.listView_7.clear()
-        self.updateSetting()
-        for song in os.listdir(self.cur_path):
-            if song.split('.')[-1] in self.song_formats:
-                self.songs_list.append([song, os.path.join(self.cur_path, song).replace('\\', '/')])
-                self.listView_7.addItem(song)
-        self.listView_7.setCurrentRow(0)
-        if self.songs_list:
-            self.cur_playing_song = self.songs_list[self.listView_7.currentRow()][-1]
+        self.updateSetting()    #调用函数更新配置文件
+        for song in os.listdir(self.cur_path):  #循环文件夹下文件
+            if song.split('.')[-1] in self.song_formats:   #查找符合文件类型 ['mp3', 'm4a', 'flac', 'wav', 'ogg']
+                self.songs_list.append([song, os.path.join(self.cur_path, song).replace('\\', '/')])   #添加到歌曲列表
+                self.listView_7.addItem(song)   #添加到listciew里
+        self.listView_7.setCurrentRow(0)        #默认选中第一个
+        if self.songs_list:     #如果列表有歌曲
+            self.cur_playing_song = self.songs_list[self.listView_7.currentRow()][-1]  #正在播放列表倒数第一个，后添加的在前，倒数第一个实际为文件列表第一个
 
     '''双击播放音乐'''
 
