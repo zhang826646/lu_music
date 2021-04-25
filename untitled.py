@@ -70,7 +70,7 @@ class Ui_Form(object):
         self.toolButton_4.setObjectName("toolButton_4")
         self.stackedWidget_2.addWidget(self.zhu_2)
 
-        # 右侧第san个页面
+        # 右侧第三个页面
         self.zhu_3 = QtWidgets.QWidget()
         self.zhu_3.setObjectName("zhu_3")
         self.label_3 = QtWidgets.QLabel(self.zhu_3)
@@ -457,14 +457,14 @@ class Ui_Form(object):
     def openDir(self):
         self.cur_path = QFileDialog.getExistingDirectory(None, "选取文件夹", self.cur_path)
         if self.cur_path:
-            self.showMusicList()
+            self.showMusicList()                #调用函数
             self.cur_playing_song = ''
-            self.setCurPlaying()
-            self.label_qian.setText('00:00')
-            self.label_hou.setText('00:00')
-            self.slider.setSliderPosition(0)
+            self.setCurPlaying()                #默认播放音乐
+            self.label_qian.setText('00:00')    #时间置空
+            self.label_hou.setText('00:00')     #时间置空
+            self.slider.setSliderPosition(0)    #进度条置空
             self.is_pause = True
-            self.pushButton_bofang.setText('播放')
+            self.pushButton_bofang.setText('播放')    #
 
     '''导入setting'''
 
@@ -501,7 +501,7 @@ class Ui_Form(object):
     '''双击播放音乐'''
 
     def doubleClicked(self):
-        self.slider.setValue(0)
+        self.slider.setValue(0)    #置空进度掉
         self.is_switching = True
         self.setCurPlaying()
         self.playMusic()
@@ -510,6 +510,7 @@ class Ui_Form(object):
     '''设置当前播放的音乐'''
 
     def setCurPlaying(self):
+        print(self.songs_list[self.listView_7.currentRow()][-1])
         self.cur_playing_song = self.songs_list[self.listView_7.currentRow()][-1]
         self.player.setMedia(QMediaContent(QUrl(self.cur_playing_song)))
 
