@@ -522,10 +522,10 @@ class Ui_Form(object):
     '''播放音乐'''
     #
     def playMusic(self):
-        if self.listView_7.count() == 0:
+        if self.listView_7.count() == 0:            #列表数量0，没有可播放文件
             self.Tips('当前路径内无可播放的音乐文件')
             return
-        if not self.player.isAudioAvailable():
+        if not self.player.isAudioAvailable():      #如果没有正在播放
             self.setCurPlaying()
         if self.is_pause or self.is_switching:
             self.player.play()
